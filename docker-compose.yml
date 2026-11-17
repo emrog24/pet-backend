@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: petmarket_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: pet_admin
+      POSTGRES_PASSWORD: pet_password_123
+      POSTGRES_DB: petmarket_db
+    ports:
+      - "5433:5432"
+    volumes:
+      # Este volumen persistente evita que se borre tu info si apagas el contenedor
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
