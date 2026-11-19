@@ -8,6 +8,8 @@ from sqlalchemy.orm import selectinload
 from app.database import engine, Base, get_db
 from app import models, schemas
 from app.routers import auth_profile, orders, services_adoptions
+from app.routers import admin
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -29,6 +31,7 @@ app.add_middleware(
 app.include_router(auth_profile.router)
 app.include_router(orders.router)
 app.include_router(services_adoptions.router)
+app.include_router(admin.router)
 
 @app.get("/health")
 async def health_check(db: AsyncSession = Depends(get_db)):

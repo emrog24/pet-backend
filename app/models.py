@@ -24,6 +24,7 @@ class User(Base):
     orders: Mapped[list["Order"]] = relationship(back_populates="user")
     appointments: Mapped[list["Appointment"]] = relationship(back_populates="user")
     adoption_requests: Mapped[list["AdoptionRequest"]] = relationship(back_populates="user")
+    notifications: Mapped[list["Notification"]] = relationship(back_populates="user")
 
 class Address(Base):
     __tablename__ = "addresses"
@@ -174,3 +175,16 @@ class AdoptionRequest(Base):
 
     user: Mapped["User"] = relationship(back_populates="adoption_requests")
     adoption: Mapped["Adoption"] = relationship()
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    titulo: Mapped[str] = mapped_column(String(150), nullable=False)
+    mensaje: Mapped[str] = mapped_column(Text, nullable=False)
+    tipo: Mapped[str] = mapped_column(String(30), default="sistema")
+    leida: Mapped[bool] = mapped_column(Boolean, default=False)
+    creado_en: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    user: Mapped["User"] = relationship(back_populates="notifications")
